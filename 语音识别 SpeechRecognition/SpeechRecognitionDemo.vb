@@ -43,6 +43,7 @@ Public Class SpeechRecognitionDemo
 
     '为语音引擎导入语法
     Private Sub LoadGrammar(Optional ByVal GrammarFilePath As String = vbNullString)
+        Dim GCount As Integer = 0
         '——组合语法：————————————————————————
         '——每个组合里只能取一个值，顺序从A到C，必须每个组合都有值———
         'Dim Grammars As GrammarBuilder = New GrammarBuilder()
@@ -64,9 +65,11 @@ Public Class SpeechRecognitionDemo
             Dim Lines() As String = IO.File.ReadAllLines(GrammarFilePath, System.Text.Encoding.Default)
             For Each Line As String In Lines
                 Grammars.Add(Line)
+                GCount += 1
             Next
             Dim GrammarList As Grammar = New Grammar(New GrammarBuilder(Grammars))
             MySpeechRecognitionEngine.LoadGrammar(GrammarList)
+            MsgBox("成功导入 " & GCount & " 个语法！")
         Else
             '没有可用的语法，则使用桌面语音技术提供的默认语法
             MySpeechRecognitionEngine.LoadGrammar(New DictationGrammar)
